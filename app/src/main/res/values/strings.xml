@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Dot Dot Dash</string>
+
+    <!-- HomeScreen -->
+    <string name="button_settings">Settings</string>
+    <string name="vOutput">Morse Code View</string>
+    <string name="vInput">Text Input</string>
+
+    <!-- Settings -->
+    <string name="settings_screen">Settings</string>
+    <string name="output">Output Method</string>
+    <string name="speed">Broadcast Frequency</string>
+    <string name="bVib">vibration</string>
+    <string name="bScr">screen</string>
+    <string name="bFla">flashlight</string>
+</resources>
