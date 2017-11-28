@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         String[] imptos = imputEdit.getText().toString().split("");
         pureinput = new ArrayList<String>(Arrays.asList(imptos));
 
-        //0 = Dot
+        //0 = Dot 
         //1 = Dash
         for (int i=0; i<pureinput.size(); i++) {
             String letter = imptos[i];
