@@ -40,13 +40,15 @@
                         android:layout_weight="100"
                         android:background="@color/bTint"
                         android:ems="10"
-                        android:inputType="text|textMultiLine" />
+                        android:inputType="text|textMultiLine"
+                        android:digits=" .,?'!/():;=+-_$@0123456789abcdefghijklmnopqrstuvwxyzæøåABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ" />
 
                     <ImageButton
                         android:id="@+id/bSend"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:onClick="sButton"
                         app:srcCompat="@drawable/icon_send" />
 
                 </LinearLayout>
@@ -63,6 +65,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/bTint"
+                android:textColor="@color/flashBlack"
+                android:textSize="17dp"
+                android:textStyle="bold"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp" />
 
