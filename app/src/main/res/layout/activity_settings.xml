@@ -40,6 +40,7 @@
                     android:layout_weight="0"
                     android:drawableTop="@drawable/icon_vibration"
                     android:gravity="center"
+                    android:onClick="onClickVib"
                     android:textOff=""
                     android:textOn=""
                     android:textSize="0dp"/>
@@ -50,6 +51,7 @@
                     android:layout_height="wrap_content"
                     android:drawableTop="@drawable/icon_screen"
                     android:gravity="center"
+                    android:onClick="onClickScreen"
                     android:layout_weight="0"
                     android:textOff=""
                     android:textOn=""
@@ -61,6 +63,7 @@
                     android:layout_height="wrap_content"
                     android:drawableTop="@drawable/icon_flashlight"
                     android:gravity="center"
+                    android:onClick="onClickFka"
                     android:layout_weight="0"
                     android:textOff=""
                     android:textOn=""

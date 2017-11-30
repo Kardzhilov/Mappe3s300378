@@ -10,6 +10,8 @@
     <string name="vOutput">Morse</string>
     <string name="vInput">Input</string>
     <string name="emptyTitle"></string>
+    <string name="firstTime">Welcome, please tap the (i) icon at the top to learn about the app!</string>
+
 
     <!-- Settings -->
     <string name="settings_screen">Settings</string>
@@ -18,4 +20,6 @@
     <string name="bVib">vibration</string>
     <string name="bScr">screen</string>
     <string name="bFla">flashlight</string>
+    <string name="min1">At least one output method needs to be selected.</string>
+
 </resources>

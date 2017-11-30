@@ -1,7 +1,9 @@
 package com.example.micha.mappe3s300378;
 
 import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,13 +16,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static ArrayList<String> pureinput = new ArrayList<String>();
-    public static ArrayList<String> convertedinput = new ArrayList<String>();
+    private static ArrayList<String> pureinput = new ArrayList<String>();
+    private static ArrayList<String> convertedinput = new ArrayList<String>();
+    private boolean vib;
+    private boolean scr;
+    private boolean fla;
+    private int     speed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +40,16 @@ public class MainActivity extends AppCompatActivity {
         //Detects when input is eddited and runs filterTextWatcher
         EditText InEditText = (EditText) findViewById(R.id.plainText);
         InEditText.addTextChangedListener(filterTextWatcher);
+
+        //Initiates/gets settings from the settings file
+        firstTimeSettings();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.home_screen_menu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -54,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                     toastMessage(getString(R.string.toast_empty));
                     return true;
                 }
-                showCodeView();
+                transmit();
                 return true;
 
             case R.id.buttonClear:
@@ -69,6 +80,44 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void transmit(){
+        fetchPreff();
+
+        if (vib == true){
+            toastMessage("scr true");
+        }
+        if (scr == true){
+            toastMessage("scr true");
+        }
+        if (fla == true){
+            toastMessage("fla true");
+        }
+    }
+
+    private void fetchPreff(){
+        SharedPreferences sharedPref = getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        vib     = sharedPref.getBoolean ("vib",     false);
+        scr     = sharedPref.getBoolean ("screen",  false);
+        fla     = sharedPref.getBoolean ("flash",   false);
+        speed   = sharedPref.getInt     ("speed",   5);
+    }
+
+    private void firstTimeSettings(){
+        SharedPreferences sharedPref = getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        String restoredText = sharedPref.getString("message", null);
+        if (restoredText != null) {
+        }
+        else{
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("message","test");
+            editor.putBoolean("vib", true);
+            editor.putBoolean("screen", false);
+            editor.putBoolean("flash", false);
+            editor.putInt("speed",5);
+            editor.apply();
+            toastMessageLong(getString(R.string.firstTime));
+        }
+    }
 
     //Runs when text field is edited
     private TextWatcher filterTextWatcher = new TextWatcher() {
