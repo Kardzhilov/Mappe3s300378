@@ -27,31 +27,16 @@
                     android:layout_height="wrap_content"
                     android:text="@string/vInput" />
 
-                <LinearLayout
+                <EditText
+                    android:id="@+id/plainText"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:layout_weight="100"
+                    android:background="@color/bTint"
+                    android:digits=" .,?'!/():;=+-_$@0123456789abcdefghijklmnopqrstuvwxyzæøåABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ"
+                    android:ems="10"
+                    android:inputType="text|textMultiLine" />
 
-                    <EditText
-                        android:id="@+id/plainText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="100"
-                        android:background="@color/bTint"
-                        android:ems="10"
-                        android:inputType="text|textMultiLine"
-                        android:digits=" .,?'!/():;=+-_$@0123456789abcdefghijklmnopqrstuvwxyzæøåABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ" />
-
-                    <ImageButton
-                        android:id="@+id/bSend"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:onClick="sButton"
-                        app:srcCompat="@drawable/icon_send" />
-
-                </LinearLayout>
             </LinearLayout>
 
             <TextView

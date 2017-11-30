@@ -4,6 +4,21 @@
 
 
     <item
+        android:id="@+id/buttonTransmit"
+        android:icon="@drawable/icon_transmit"
+        android:title="@string/button_transmit"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/buttonClear"
+        android:icon="@drawable/icon_clear"
+        android:title="@string/button_clear"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/buttonInfo"
+        android:icon="@drawable/icon_info"
+        android:title="@string/button_info"
+        app:showAsAction="always"/>
+    <item
         android:id="@+id/buttonSettings"
         android:icon="@drawable/icon_settings"
         android:title="@string/button_settings"

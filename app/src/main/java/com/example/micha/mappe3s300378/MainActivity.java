@@ -4,6 +4,8 @@ import android.app.ActionBar;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_USE_LOGO);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
+        //Detects when input is eddited and runs filterTextWatcher
+        EditText InEditText = (EditText) findViewById(R.id.plainText);
+        InEditText.addTextChangedListener(filterTextWatcher);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -36,35 +42,65 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
             case R.id.buttonSettings:
                 startActivity(new Intent(this, Settings.class));
+                return true;
+
+            case R.id.buttonTransmit:
+                EditText imputEdit = findViewById(R.id.plainText);
+                String Slenght = imputEdit.getText().toString();
+                if (Slenght.length()<1){
+                    toastMessage(getString(R.string.toast_empty));
+                    return true;
+                }
+                showCodeView();
+                return true;
+
+            case R.id.buttonClear:
+                EditText clearEdit = findViewById(R.id.plainText);
+                clearEdit.setText("");
+                return true;
+
+            case R.id.buttonInfo:
+                startActivity(new Intent(this, InfoDisplay.class));
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void sButton(View view) {
+
+    //Runs when text field is edited
+    private TextWatcher filterTextWatcher = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            showCodeView();
+        }
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
+    };
+
+    private void showCodeView(){
         inputInterp();
         String msg = "";
         for (int i=0;i<convertedinput.size(); i++ ){
             msg = msg + convertedinput.get(i) + " ";
         }
-        toastMessageLong(msg);
+        //toastMessageLong(msg);
         codeView();
     }
 
     private void codeView(){
-        Log.d("myTag", "CodeView");
         String msg = "";
         TextView raw = findViewById(R.id.rawView);
 
         for (int i=0;i<convertedinput.size(); i++ ){
-
-            Log.d("myTag", "For1");
             String tmp[] = convertedinput.get(i).split("");
             for (int o=0; o<tmp.length; o++){
-
-                Log.d("myTag", "For2");
                 if (tmp[o].equals("1")){
                     msg = msg + "-";
                 }
@@ -77,8 +113,6 @@ public class MainActivity extends AppCompatActivity {
             }
             msg = msg + "  ";
         }
-
-        Log.d("myTag", "END");
         raw.setText(msg);
     }
 
@@ -89,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         String[] imptos = imputEdit.getText().toString().split("");
         pureinput = new ArrayList<String>(Arrays.asList(imptos));
 
-        //0 = Dot 
+        //0 = Dot
         //1 = Dash
         for (int i=0; i<pureinput.size(); i++) {
             String letter = imptos[i];
