@@ -1,7 +1,15 @@
 package com.example.micha.mappe3s300378;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,7 +17,7 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-public class Settings extends AppCompatActivity {
+public class MySettings extends AppCompatActivity {
 
     private ToggleButton vib;
     private ToggleButton scr;
@@ -42,6 +50,7 @@ public class Settings extends AppCompatActivity {
     }
 
 
+
     public void onClickVib(View view) {
         if (scr.isChecked()==true || fla.isChecked()==true){
             scr.setChecked(false);
@@ -56,6 +65,23 @@ public class Settings extends AppCompatActivity {
     }
 
     public void onClickScreen(View view) {
+        boolean permission;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            permission = Settings.System.canWrite(this);
+        } else {
+            permission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_SETTINGS) == PackageManager.PERMISSION_GRANTED;
+        }
+        if (!permission) {
+            fla.setChecked(false);
+            scr.setChecked(false);
+            vib.setChecked(true);
+            toastMessageLong(getString(R.string.writeNeed));
+            Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+            intent.setData(Uri.parse("package:" + getApplicationContext().getPackageName()));
+            startActivity(intent);
+            return;
+        }
+
         if (vib.isChecked()==true || fla.isChecked()==true){
             scr.setChecked(true);
             fla.setChecked(false);
@@ -69,6 +95,21 @@ public class Settings extends AppCompatActivity {
     }
 
     public void onClickFka(View view) {
+        Boolean hasFlash = getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+
+        if(!hasFlash){
+            fla.setChecked(false);
+            scr.setChecked(false);
+            vib.setChecked(true);
+            toastMessageLong(getString(R.string.noCam));
+            return;
+        }
+        else {
+            ActivityCompat.requestPermissions(MySettings.this,new String[]{Manifest.permission.CAMERA},1);
+            ActivityCompat.requestPermissions(MySettings.this,new String[]{Manifest.permission.VIBRATE},1);
+        }
+
+
         if (scr.isChecked()==true || vib.isChecked()==true){
             scr.setChecked(false);
             fla.setChecked(true);
@@ -82,7 +123,7 @@ public class Settings extends AppCompatActivity {
     }
 
     private void fetchPreff(){
-        SharedPreferences sharedPref = getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences("MySettings", Context.MODE_PRIVATE);
         Boolean buttVib     = sharedPref.getBoolean ("vib",     false);
         Boolean buttScr     = sharedPref.getBoolean ("screen",  false);
         Boolean buttFla     = sharedPref.getBoolean ("flash",   false);
@@ -95,7 +136,7 @@ public class Settings extends AppCompatActivity {
     }
 
     private void savePreff(){
-        SharedPreferences sharedPref = getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences("MySettings", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean("vib", vib.isChecked());
         editor.putBoolean("screen", scr.isChecked());

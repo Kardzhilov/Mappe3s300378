@@ -4,19 +4,20 @@ import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraManager;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.provider.Settings;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.buttonSettings:
-                startActivity(new Intent(this, Settings.class));
+                startActivity(new Intent(this, MySettings.class));
                 return true;
 
             case R.id.buttonTransmit:
@@ -82,20 +83,144 @@ public class MainActivity extends AppCompatActivity {
 
     private void transmit(){
         fetchPreff();
+        int fastSpeed = speed * 50;
 
         if (vib == true){
-            toastMessage("scr true");
+            Vibrator v = (Vibrator) this.getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+            for (int i=0;i<convertedinput.size(); i++ ){
+                String tmp[] = convertedinput.get(i).split("");
+                for (int o=0; o<tmp.length; o++){
+                    if (tmp[o].equals("1")){
+                        v.vibrate(fastSpeed*3);
+                    }
+                    if (tmp[o].equals("0")){
+                        v.vibrate(fastSpeed);
+                    }
+                    if (tmp[o].equals("s")){
+                        try {
+                            Thread.sleep(fastSpeed*3);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    try {
+                        Thread.sleep(fastSpeed);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
         if (scr == true){
-            toastMessage("scr true");
+            if (fastSpeed<1000){
+                fastSpeed = fastSpeed*5;
+            }
+            if (fastSpeed>4000){
+                fastSpeed = fastSpeed/2;
+            }
+            int originalbrightnessValue = Settings.System.getInt(this.getContentResolver(),Settings.System.SCREEN_BRIGHTNESS,0);
+            for (int i=0;i<convertedinput.size(); i++ ){
+                String tmp[] = convertedinput.get(i).split("");
+                for (int o=0; o<tmp.length; o++) {
+                    if (tmp[o].equals("1")) {
+                        Settings.System.putInt(this.getContentResolver(),Settings.System.SCREEN_BRIGHTNESS,255);
+                        try {
+                            Thread.sleep(fastSpeed * 3);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        Settings.System.putInt(this.getContentResolver(),Settings.System.SCREEN_BRIGHTNESS,0);
+                    }
+                    if (tmp[o].equals("0")) {
+                        Settings.System.putInt(this.getContentResolver(),Settings.System.SCREEN_BRIGHTNESS,0);
+                        try {
+                            Thread.sleep(fastSpeed);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        Settings.System.putInt(this.getContentResolver(),Settings.System.SCREEN_BRIGHTNESS,0);
+                    }
+                    if (tmp[o].equals("s")) {
+                        Settings.System.putInt(this.getContentResolver(),Settings.System.SCREEN_BRIGHTNESS,0);
+                        try {
+                            Thread.sleep(fastSpeed * 3);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    try {
+                        Settings.System.putInt(this.getContentResolver(),Settings.System.SCREEN_BRIGHTNESS,0);
+                        Thread.sleep(fastSpeed);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Settings.System.putInt(this.getContentResolver(),Settings.System.SCREEN_BRIGHTNESS,originalbrightnessValue);
+            }
+
         }
         if (fla == true){
-            toastMessage("fla true");
+            for (int i=0;i<convertedinput.size(); i++ ){
+                String tmp[] = convertedinput.get(i).split("");
+                for (int o=0; o<tmp.length; o++){
+                    if (tmp[o].equals("1")){
+                        flashOn();
+                        try {
+                            Thread.sleep(fastSpeed*3);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        flashOff();
+                    }
+                    if (tmp[o].equals("0")){
+                        flashOn();
+                        try {
+                            Thread.sleep(fastSpeed);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        flashOff();
+                    }
+                    if (tmp[o].equals("s")){
+                        try {
+                            Thread.sleep(fastSpeed*3);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    try {
+                        Thread.sleep(fastSpeed);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+        }
+    }
+    }
+
+    private void flashOn(){
+        try{
+            CameraManager manager = (CameraManager) this.getSystemService(Context.CAMERA_SERVICE);
+            String[] list = manager.getCameraIdList();
+            manager.setTorchMode(list[0], true);
+        }
+        catch (CameraAccessException cae){
+            cae.printStackTrace();
+        }
+    }
+
+    private void flashOff(){
+        try{
+            CameraManager manager = (CameraManager) this.getSystemService(Context.CAMERA_SERVICE);
+            manager.setTorchMode(manager.getCameraIdList()[0], false);
+        }
+        catch (CameraAccessException cae){
+            cae.printStackTrace();
         }
     }
 
     private void fetchPreff(){
-        SharedPreferences sharedPref = getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences("MySettings", Context.MODE_PRIVATE);
         vib     = sharedPref.getBoolean ("vib",     false);
         scr     = sharedPref.getBoolean ("screen",  false);
         fla     = sharedPref.getBoolean ("flash",   false);
@@ -103,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void firstTimeSettings(){
-        SharedPreferences sharedPref = getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences("MySettings", Context.MODE_PRIVATE);
         String restoredText = sharedPref.getString("message", null);
         if (restoredText != null) {
         }
@@ -164,6 +289,7 @@ public class MainActivity extends AppCompatActivity {
         }
         raw.setText(msg);
     }
+
 
     private void inputInterp(){
         pureinput.clear();

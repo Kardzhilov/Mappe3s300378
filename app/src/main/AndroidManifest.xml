@@ -4,7 +4,9 @@
 
     <!-- The line below is to be able to use the camera and flashlight -->
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"></uses-permission>
 
     <application
         android:allowBackup="true"
@@ -21,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Settings"
+            android:name=".MySettings"
             android:label="@string/settings_screen"
             android:parentActivityName=".MainActivity"></activity>
         <activity android:name=".InfoDisplay"

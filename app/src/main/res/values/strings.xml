@@ -13,7 +13,7 @@
     <string name="firstTime">Welcome, please tap the (i) icon at the top to learn about the app!</string>
 
 
-    <!-- Settings -->
+    <!-- MySettingsings -->
     <string name="settings_screen">Settings</string>
     <string name="output">Output Method</string>
     <string name="speed">Broadcast Frequency</string>
@@ -21,5 +21,21 @@
     <string name="bScr">screen</string>
     <string name="bFla">flashlight</string>
     <string name="min1">At least one output method needs to be selected.</string>
+    <string name="noCam">Your device does not support flashlight mode.</string>
+    <string name="writeNeed">Need to be allowed to modify system settings to change screen brightness.</string>
+
+
+    <!-- InfoScreen -->
+
+    <string name="info">Dot Dot Dash is a morse code generator/transmission app. \nIt allows you to input normal plain text and have it be output as morse code in the form of vibration, camera flashing or the screen adjusting brightness.
+        \nWhen you write text it is automatically displayed below in the traditional morse code depiction using dots . and dashes -\n\n
+        On the main screen you will find four buttons. From left to right they are: Transmit, Clear, Info and Settings. \n\n
+        On the Settings screen you can pick in which way you want to transmit the morse code. By default its set to vibration, but you also have the option to use the camera flashlight or adjusting the screen brightness(The screen brightness option needs to be slow because of the time the screen needs to fade between low and high brightness). \n\n
+        Under the output method you have the Broadcast Frequency setting, this adjusts the speed of the morse code. \n
+        The Clear button clears the text field of any text you typed into it. \n
+        And lastly the Transmit button transmits your message.
+
+    </string>
+
 
 </resources>
