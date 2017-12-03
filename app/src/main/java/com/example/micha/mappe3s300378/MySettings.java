@@ -49,8 +49,6 @@ public class MySettings extends AppCompatActivity {
 
     }
 
-
-
     public void onClickVib(View view) {
         if (scr.isChecked()==true || fla.isChecked()==true){
             scr.setChecked(false);

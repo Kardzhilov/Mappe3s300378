@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Adds app icon to ActionBar
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_USE_LOGO);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
@@ -289,7 +290,6 @@ public class MainActivity extends AppCompatActivity {
         }
         raw.setText(msg);
     }
-
 
     private void inputInterp(){
         pureinput.clear();
